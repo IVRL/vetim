@@ -1,278 +1,515 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text">
-  <meta property="og:title" content="VETIM" />
-  <meta property="og:description" content="Expanding the Vocabulary of Text-to-Image Models only with Text" />
-  <meta property="og:url" content="https://ivrl.github.io/vetim/" />
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-
-  <meta name="twitter:title" content="VETIM">
-  <meta name="twitter:description" content="Expanding the Vocabulary of Text-to-Image Models only with Text">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text - Everaert et al. - BMVC 2023">
+  <meta name="description" content="VETIM expands the vocabulary of text-to-image models using only textual descriptions, without sample images. By supervising only the text encoder output, it enables faster single-token concept learning from text alone.">
+  <meta name="keywords" content="text-to-image, vocabulary expansion, textual inversion, stable diffusion, CLIP, text encoder, concept learning, BMVC 2023, machine learning, computer vision, AI">
+  <meta name="author" content="Martin Nicolas Everaert, Marco Bocchio, Sami Arpa, Sabine Süsstrunk, Radhakrishna Achanta">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="IVRL - EPFL">
+  <meta property="og:title" content="VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text - Everaert et al. - BMVC 2023">
+  <meta property="og:description" content="VETIM expands the vocabulary of text-to-image models using only textual descriptions, without sample images. By supervising only the text encoder output, it enables faster single-token concept learning from text alone.">
+  <meta property="og:url" content="https://ivrl.github.io/vetim/">
+  <meta property="og:image" content="https://ivrl.github.io/vetim/static/diagram.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VETIM architecture">
+  <meta property="article:published_time" content="2023-11-20T00:00:00.000Z">
+  <meta property="article:author" content="Martin Nicolas Everaert">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="text-to-image">
+  <meta property="article:tag" content="vocabulary expansion">
 
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO: Replace with your lab/institution Twitter handle
+  <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE">  -->
+  <meta name="twitter:creator" content="@EveraertMartin">
+  <meta name="twitter:title" content="VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text - Everaert et al. - BMVC 2023">
+  <meta name="twitter:description" content="VETIM expands the vocabulary of text-to-image models using only textual descriptions, without sample images. By supervising only the text encoder output, it enables faster single-token concept learning from text alone.">
+  <meta name="twitter:image" content="https://ivrl.github.io/vetim/static/diagram.png">
+  <meta name="twitter:image:alt" content="VETIM architecture">
 
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text">
+  <meta name="citation_author" content="Everaert, Martin Nicolas">
+  <meta name="citation_author" content="Bocchio, Marco">
+  <meta name="citation_author" content="Arpa, Sami">
+  <meta name="citation_author" content="Süsstrunk, Sabine">
+  <meta name="citation_author" content="Achanta, Radhakrishna">
+  <meta name="citation_publication_date" content="2023">
+  <meta name="citation_conference_title" content="34th British Machine Vision Conference (BMVC 2023)">
+  <meta name="citation_pdf_url" content="https://papers.bmvc2023.org/0016.pdf">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  
   <title>VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text</title>
-  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
+  
+  <!-- Favicon and App Icons 
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico"> -->
+  
+  <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/bulma-carousel.min.js"></script>
-  <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text",
+    "description": "VETIM expands the vocabulary of text-to-image models using only textual descriptions, without sample images. By supervising only the text encoder output, it enables faster single-token concept learning from text alone.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Martin Nicolas Everaert",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "EPFL"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Marco Bocchio",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Largo.ai"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Sami Arpa",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Largo.ai"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Sabine Süsstrunk",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "EPFL"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Radhakrishna Achanta",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "EPFL"
+        }
+      }
+    ],
+    "datePublished": "2023-11-20",
+    "publisher": {
+      "@type": "Organization",
+      "name": "BMVA"
+    },
+    "url": "https://ivrl.github.io/vetim/",
+    "image": "https://ivrl.github.io/vetim/static/diagram.png",
+    "keywords": ["text-to-image", "vocabulary expansion", "textual inversion", "stable diffusion", "CLIP", "text encoder", "concept learning", "machine learning", "computer vision"],
+    "abstract": "Text-to-image models, such as Stable Diffusion, can generate high-quality images from simple textual prompts. With methods such as Textual Inversion, it is possible to expand the vocabulary of these models with additional concepts, by learning the vocabulary embedding of new tokens. These methods have two limitations: slowness of optimisation and dependence on sample images. Slowness mainly stems from the use of the original text-to-image training loss, without considering potential auxiliary supervision terms. Relying on sample images enables learning new visual features but restricts the vocabulary expansion to concepts with pre-existing images. In response, we introduce a novel approach, named VETIM, which takes only a textual description of the concept as input. It expands the vocabulary through supervision only at the text encoder output, without accessing the image-generation part, making it faster at optimisation time. It also does not copy visual features from sample images. Our method can be used directly for applications that require a concept as a single token but do not require learning new visual features. Our approach shows that a mere textual description suffices to obtain a single token referring to a specific concept. To show the effectiveness of our method, we evaluate its performance subjectively and through objective measures. The results show that our approach is effective in expanding the vocabulary of text-to-image models without requiring images.",
+    "isAccessibleForFree": true
+  }
+  </script>
 
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "IVRL - EPFL",
+    "url": "https://www.epfl.ch/labs/ivrl/"
+  }
+  </script>
+  
   <meta name="google-site-verification" content="ohByZQJx9EYQ7Po92WxVz1fvVDkQqgI6U5wQZ_7mKBY" />
 </head>
 
 <body>
 
 
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">VETIM: Expanding the Vocabulary of Text-to-Image Models only with
-              Text</h1>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=1TDqUuwAAAAJ" target="_blank">Martin Nicolas
-                  Everaert</a> <sup>1</sup>,
-              </span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=KDiTxBQAAAAJ" target="_blank">Marco
-                  Bocchio</a> <sup>2</sup>,
-              </span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=84FopNgAAAAJ" target="_blank">Sami Arpa</a>
-                <sup>2</sup>,
-              </span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=EX3OYP4AAAAJ" target="_blank">Sabine Süsstrunk</a>
-                <sup>1</sup>,
-              </span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=lc2HaZwAAAAJ" target="_blank">Radhakrishna
-                  Achanta</a> <sup>1</sup>
-              </span>
-            </div>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <sup>1</sup> School of Computer and Communication Sciences, EPFL, Switzerland, <br><sup>2</sup>
-                Largo.ai, Lausanne, Switzerland
-              </span>
-            </div>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">BMVC 2023</span>
-            </div>
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <a href="https://martin-ev.github.io/vgoq" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Visual Grounding for Object Questions</h5>
+            <p>Introduces Visual Grounding for Object Questions (VGOQ), a new task for grounding visual evidence or context that supports answering general questions about objects, beyond directly visible elements.</p>
+            <span class="work-venue">To appear in CVPR 2026</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://ivrl.github.io/covariance-mismatch/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Covariance Mismatch in Diffusion Models</h5>
+            <p>Investigates the covariance mismatch between noise and data in diffusion models and its impact on image generation.</p>
+            <span class="work-venue">Preprint 2024</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://ivrl.github.io/signal-leak-bias/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Exploiting the Signal-Leak Bias in Diffusion Models</h5>
+            <p>Examines and leverages the signal-leak bias in diffusion models for improved image generation.</p>
+            <span class="work-venue">WACV 2024</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://ivrl.github.io/diffusion-in-style/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Diffusion in Style</h5>
+            <p>Customizes Stable Diffusion's output style by adapting the initial noise distribution, making style transfer more sample-efficient and faster.</p>
+            <span class="work-venue">ICCV 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://ivrl.github.io/ComicsDepth/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Estimating Image Depth in the Comics Domain</h5>
+            <p>Estimates depth in comic book images by converting them to natural images and filtering out text to improve accuracy.</p>
+            <span class="work-venue">WACV 2022</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/2006.02333" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Scene Relighting with Illumination Estimation in the Latent Space</h5>
+            <p>Transfers lighting conditions between images by estimating and manipulating illumination in the latent space of an encoder-decoder network.</p>
+            <span class="work-venue">arXiv 2020</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://www.epfl.ch/labs/ivrl" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>More works from Image and Visual Representation Lab (IVRL)</h5>
+            <p>Also check more works from our labmates at the Image and Visual Representation Lab (IVRL) at EPFL.</p>
+            <span class="work-venue">IVRL - EPFL</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
             <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="https://papers.bmvc2023.org/0016.pdf" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Paper</span>
-                  </a>
+              <h1 class="title is-1 publication-title">VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text</h1>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=1TDqUuwAAAAJ" target="_blank">Martin Nicolas Everaert</a> <sup>1</sup>,
                 </span>
-                <span class="link-block">
-                  <a href="https://bmvc2022.mpi-inf.mpg.de/BMVC2023/0016_supp.zip" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-archive"></i>
-                    </span>
-                    <span>Supplementary material</span>
-                  </a>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=KDiTxBQAAAAJ" target="_blank">Marco Bocchio</a> <sup>2</sup>,
                 </span>
-                <span class="link-block">
-                  <a href="https://proceedings.bmvc2023.org/16/" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-external-link-alt"></i>
-                    </span>
-                    <span>BMVC proceedings</span>
-                  </a>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=84FopNgAAAAJ" target="_blank">Sami Arpa</a> <sup>2</sup>,
                 </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=EX3OYP4AAAAJ" target="_blank">Sabine Süsstrunk</a> <sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=lc2HaZwAAAAJ" target="_blank">Radhakrishna Achanta</a> <sup>1</sup>
+                </span>
+              </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <sup>1</sup> EPFL, Switzerland, <br><sup>2</sup> Largo.ai, Lausanne, Switzerland
+                </span>
+              </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">BMVC 2023</span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="https://papers.bmvc2023.org/0016.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://bmvc2022.mpi-inf.mpg.de/BMVC2023/0016_supp.zip" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-archive"></i>
+                      </span>
+                      <span>Supplementary material</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://proceedings.bmvc2023.org/16/" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-external-link-alt"></i>
+                      </span>
+                      <span>BMVC proceedings</span>
+                    </a>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Paper abstract -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <p>
-              Text-to-image models, such as Stable Diffusion, can generate high-quality images from simple textual
-              prompts. With methods such as Textual Inversion, it is possible to expand the vocabulary of these models
-              with additional concepts, by learning the vocabulary embedding of new tokens.
-              These methods have two limitations: slowness of optimisation and dependence on sample images. Slowness
-              mainly stems from the use of the original text-to-image training loss, without considering potential
-              auxiliary supervision terms. Relying on sample images enables learning new visual features but restricts
-              the vocabulary expansion to concepts with pre-existing images.
-              In response, we introduce a novel approach, named VETIM, which takes only a textual description of the
-              concept as input.
-              It expands the vocabulary through supervision only at the text encoder output, without accessing the
-              image-generation part, making it faster at optimisation time.
-              It also does not copy visual features from sample images.
-              Our method can be used directly for applications that require a concept as a single token but do not
-              require learning new visual features.
-              Our approach shows that a mere textual description suffices to obtain a single token referring to a
-              specific concept.
-              To show the effectiveness of our method, we evaluate its performance subjectively and through objective
-              measures.
-              The results show that our approach is effective in expanding the vocabulary of text-to-image models
-              without requiring images.
-            </p>
+    <!-- Paper abstract -->
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Text-to-image models, such as Stable Diffusion, can generate high-quality images from simple textual
+                prompts. With methods such as Textual Inversion, it is possible to expand the vocabulary of these models
+                with additional concepts, by learning the vocabulary embedding of new tokens.
+                These methods have two limitations: slowness of optimisation and dependence on sample images. Slowness
+                mainly stems from the use of the original text-to-image training loss, without considering potential
+                auxiliary supervision terms. Relying on sample images enables learning new visual features but restricts
+                the vocabulary expansion to concepts with pre-existing images.
+                In response, we introduce a novel approach, named VETIM, which takes only a textual description of the
+                concept as input.
+                It expands the vocabulary through supervision only at the text encoder output, without accessing the
+                image-generation part, making it faster at optimisation time.
+                It also does not copy visual features from sample images.
+                Our method can be used directly for applications that require a concept as a single token but do not
+                require learning new visual features.
+                Our approach shows that a mere textual description suffices to obtain a single token referring to a
+                specific concept.
+                To show the effectiveness of our method, we evaluate its performance subjectively and through objective
+                measures.
+                The results show that our approach is effective in expanding the vocabulary of text-to-image models
+                without requiring images.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- End paper abstract -->
+    </section>
+    <!-- End paper abstract -->
 
 
-  <!-- Youtube video -->
-  <section class="hero is-small">
-    <div class="hero-body">
-      <div class="container">
-        <!-- Paper video. -->
-        <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Video Presentation</h2>
+    <!-- Image carousel 
+    <section class="hero is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              First image description.
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+              Second image description.
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
+            <h2 class="subtitle has-text-centered">
+            Third image description.
+          </h2>
         </div>
-        <div class="columns is-centered has-text-centered">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <source src="https://bmvc2022.mpi-inf.mpg.de/BMVC2023/0016_video.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- End youtube video -->
-
-
-  <!-- Video carousel
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here 
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here 
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here 
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
+        <div class="item">
+          <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
+          <h2 class="subtitle has-text-centered">
+            Fourth image description.
+          </h2>
         </div>
       </div>
     </div>
-  </div>
-</section>
-End video carousel -->
+    </div>
+    </section>
+    End image carousel -->
 
-  <section class="hero is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered has-text-centered">
-          <h2 class="title is-3">Poster</h2>
+
+
+
+    <!-- Youtube video -->
+    <section class="hero is-small">
+      <div class="hero-body">
+        <div class="container">
+          <!-- Paper video. -->
+          <h2 class="title is-3 has-text-centered">Video Presentation</h2>
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+              <video poster="" id="video1" autoplay controls muted loop height="100%">
+                <source src="https://bmvc2022.mpi-inf.mpg.de/BMVC2023/0016_video.mp4"
+                type="video/mp4">
+              </video>
+              </div>
+            </div>
+          </div>
         </div>
-        <iframe src="static/BMVC poster.pdf" width="100%" height="600" frameborder="0">
-        </iframe>
       </div>
-    </div>
-  </section>
+    </section>
+    <!-- End youtube video -->
 
 
-  <!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container content">
-      <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Citation</h2>
+    <!-- Video carousel
+    <section class="hero is-small">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Another Carousel</h2>
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item item-video1">
+              <video poster="" id="video1" controls muted loop height="100%">
+                <!-- Your video file here
+                <source src="static/videos/carousel1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video2">
+              <video poster="" id="video2" controls muted loop height="100%">
+                <!-- Your video file here 
+                <source src="static/videos/carousel2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video3">
+              <video poster="" id="video3" controls muted loop height="100%">\
+                <!-- Your video file here
+                <source src="static/videos/carousel3.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="container is-max-desktop">
-        <pre><code>
-@InProceedings{Everaert_2023_BMVC,
-    author    = {Everaert, Martin Nicolas and Bocchio, Marco and Arpa, Sami and S\"usstrunk, Sabine and Achanta, Radhakrishna},
-    title     = {{VETIM}: {E}xpanding the {V}ocabulary of {T}ext-to-{I}mage {M}odels only with {T}ext},
-    booktitle = {34th British Machine Vision Conference 2023, {BMVC} 2023, Aberdeen, UK, November 20-24, 2023},
-    publisher = {{BMVA}},
-    month     = {November},
-    year      = {2023},
-    url       = {https://papers.bmvc2023.org/0016.pdf}
-}
-      </code></pre>
+    </section>
+    End video carousel -->
+    
+    <section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3 has-text-centered">Poster</h2>
+          <div style="display: flex; justify-content: center;">
+            <iframe src="static/BMVC poster.pdf" style="width: 90%; aspect-ratio: 1 / 1.5; max-height: 900px;" frameborder="0">
+            </iframe>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-  <!--End BibTex citation -->
-
-
-
-
+    </section>
+    
+    <!--BibTex citation -->
+    <section class="hero is-small" id="BibTeX">
+      <div class="hero-body">
+        <div class="container is-max-desktop content">
+          <div class="columns is-centered">
+            <div class="column is-four-fifths">
+              <div class="bibtex-header" style="position: relative;">
+                <h2 class="title is-3" style="flex: 1; text-align: center;">BibTeX Citation</h2>
+                <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+                  <i class="fas fa-copy"></i>
+                  <span class="copy-text">Copy</span>
+                </button>
+              </div>
+              <div class="content has-text-justified">
+                <p>Please use the following BibTeX entry to cite our paper:</p>
+              </div>
+            </div>
+          </div>
+          <pre id="bibtex-code"><code>@InProceedings{Everaert_2023_BMVC,
+  title     = {{VETIM}: {E}xpanding the {V}ocabulary of {T}ext-to-{I}mage {M}odels only with {T}ext},
+  author    = {Everaert, Martin Nicolas and Bocchio, Marco and Arpa, Sami and S\"usstrunk, Sabine and Achanta, Radhakrishna},
+  booktitle = {34th British Machine Vision Conference 2023, {BMVC} 2023, Aberdeen, UK, November 20-24, 2023},
+  publisher = {{BMVA}},
+  month     = {November},
+  year      = {2023},
+  url       = {https://papers.bmvc2023.org/0016.pdf}
+}</code></pre>
+        </div>
+      </div>
+    </section>
+    <!--End BibTex citation -->
+  </main>
   <footer class="footer">
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-8">
           <div class="content">
-
             <p>
               This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
-                target="_blank">Academic Project Page Template</a>.
+                target="_blank">Academic Project Page Template</a> which was adopted from the <a
+                href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
             </p>
-
           </div>
         </div>
       </div>
     </div>
   </footer>
 
-
 </body>
-
 </html>
