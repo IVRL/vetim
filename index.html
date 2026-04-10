@@ -28,6 +28,15 @@
   <meta property="article:section" content="Research">
   <meta property="article:tag" content="text-to-image">
   <meta property="article:tag" content="vocabulary expansion">
+  <meta property="article:tag" content="textual inversion">
+  <meta property="article:tag" content="stable diffusion">
+  <meta property="article:tag" content="CLIP">
+  <meta property="article:tag" content="text encoder">
+  <meta property="article:tag" content="concept learning">
+  <meta property="article:tag" content="BMVC 2023">
+  <meta property="article:tag" content="machine learning">
+  <meta property="article:tag" content="computer vision">
+  <meta property="article:tag" content="AI">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -65,9 +74,9 @@
   
   <title>VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text</title>
   
-  <!-- Favicon and App Icons 
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico"> -->
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/png" href="static/images/favicon.png">
+  <link rel="apple-touch-icon" href="static/images/favicon.png">
   
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -223,8 +232,16 @@
         <a href="https://ivrl.github.io/diffusion-in-style/" class="work-item" target="_blank">
           <div class="work-info">
             <h5>Diffusion in Style</h5>
-            <p>Customizes Stable Diffusion's output style by adapting the initial noise distribution, making style transfer more sample-efficient and faster.</p>
+            <p>Customizes Stable Diffusion's output style by adapting the initial noise distribution, making style adaptation more sample-efficient and faster.</p>
             <span class="work-venue">ICCV 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://ivrl.github.io/vetim/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>VETIM: Expanding the Vocabulary of Text-to-Image Models only with Text</h5>
+            <p>Expands text-to-image models' vocabulary by learning new token embeddings from textual descriptions alone, without requiring sample images.</p>
+            <span class="work-venue">BMVC 2023</span>
           </div>
           <i class="fas fa-external-link-alt"></i>
         </a>
@@ -408,10 +425,8 @@
           <h2 class="title is-3 has-text-centered">Video Presentation</h2>
           <div class="columns is-centered has-text-centered">
             <div class="column is-four-fifths">
-              <video poster="" id="video1" autoplay controls muted loop height="100%">
-                <source src="https://bmvc2022.mpi-inf.mpg.de/BMVC2023/0016_video.mp4"
-                type="video/mp4">
-              </video>
+              <div class="publication-video">
+                <iframe src="https://www.youtube.com/embed/FBnUVXgvBac?si=0vxmiJll_JFm_LNk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </div>
@@ -451,17 +466,28 @@
     </section>
     End video carousel -->
     
+    <!--Poster -->
     <section class="hero is-small is-light">
       <div class="hero-body">
         <div class="container">
           <h2 class="title is-3 has-text-centered">Poster</h2>
-          <div style="display: flex; justify-content: center;">
-            <iframe src="static/BMVC poster.pdf" style="width: 90%; aspect-ratio: 1 / 1.5; max-height: 900px;" frameborder="0">
-            </iframe>
+          <div class="columns is-centered">
+            <div class="column is-four-fifths">
+              <div class="poster-container" style="position: relative; width: fit-content; max-width: 100%; margin: 0 auto;">
+                <a href="static/BMVC poster.pdf" target="_blank" class="download-poster-btn" style="position: absolute; top: 0.5rem; right: 0.5rem; text-decoration: none; opacity: 0; transition: opacity 0.3s ease; z-index: 1;" title="Download Poster as PDF">
+                  <i class="fas fa-download"></i>
+                  <span class="copy-text">PDF</span>
+                </a>
+                <a href="static/BMVC poster.pdf" target="_blank">
+                  <img src="static/images/poster.png" alt="VETIM - BMVC 2023 Poster" style="max-height: 900px; width: auto; max-width: 100%; display: block; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); border-radius: 8px; border: 1px solid rgba(0, 0, 0, 0.08);">
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
+    <!--End Poster -->
     
     <!--BibTex citation -->
     <section class="hero is-small" id="BibTeX">
@@ -469,19 +495,18 @@
         <div class="container is-max-desktop content">
           <div class="columns is-centered">
             <div class="column is-four-fifths">
-              <div class="bibtex-header" style="position: relative; align-items: flex-start;">
-                <h2 class="title is-3" style="flex: 1; text-align: center;">Citation</h2>
-                <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-                  <i class="fas fa-copy"></i>
-                  <span class="copy-text">Copy</span>
-                </button>
-              </div>
+              <h2 class="title is-3 has-text-centered">Citation</h2>
               <div class="content has-text-justified">
                 <p>Please use the following BibTeX entry to cite our paper:</p>
               </div>
             </div>
           </div>
-          <pre id="bibtex-code"><code>@InProceedings{Everaert_2023_BMVC,
+          <div style="position: relative;">
+            <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard" style="position: absolute; top: 0; right: 0; z-index: 1;">
+              <i class="fas fa-copy"></i>
+              <span class="copy-text">Copy</span>
+            </button>
+            <pre id="bibtex-code"><code>@InProceedings{Everaert_2023_BMVC,
   title     = {{VETIM}: {E}xpanding the {V}ocabulary of {T}ext-to-{I}mage {M}odels only with {T}ext},
   author    = {Everaert, Martin Nicolas and Bocchio, Marco and Arpa, Sami and S\"usstrunk, Sabine and Achanta, Radhakrishna},
   booktitle = {34th British Machine Vision Conference 2023, {BMVC} 2023, Aberdeen, UK, November 20-24, 2023},
@@ -490,6 +515,7 @@
   year      = {2023},
   url       = {https://papers.bmvc2023.org/0016.pdf}
 }</code></pre>
+          </div>
         </div>
       </div>
     </section>
